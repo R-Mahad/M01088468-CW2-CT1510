@@ -1,0 +1,51 @@
+# ------------------------------------------
+# Python Ignore Rules
+# ------------------------------------------
+
+# Byte-compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+
+# Distribution / build files
+build/
+dist/
+*.egg-info/
+
+# SQLite or other databases (future weeks)
+*.db
+
+# ------------------------------------------
+# VS Code Ignore Rules
+# ------------------------------------------
+.vscode/
+.settings/
+*.code-workspace
+
+# ------------------------------------------
+# OS / System Files
+# ------------------------------------------
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# ------------------------------------------
+# Project Specific
+# ------------------------------------------
+# Do NOT ignore users.txt (your instructor needs it)
+# So we leave it out intentionally
+
+# But if there are test logs/debug files:
+logs/
+*.log

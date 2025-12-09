@@ -2,36 +2,46 @@ import hashlib
 
 def hash_password(password: str) -> str:
     """
-    Hash the password using SHA-256.
-    (In the workshop they use bcrypt, but this works without extra installs.)
+    Hash a password using SHA-256.
     """
     return hashlib.sha256(password.encode("utf-8")).hexdigest()
 
 
-def migrate_users_from_file(conn, file_path="DATA/users.txt"):
+def migrate_users_from_file(conn, file_path):
     """
-    Read users from a text file and insert into the users table.
-    Each line in users.txt should look like:
-        username,password,role
+    Read users from a text file and insert them into the users table.
+    Each valid line must be: username,password,role
     """
     cursor = conn.cursor()
 
     with open(file_path, "r", encoding="utf-8") as f:
         for line in f:
             line = line.strip()
+
             if not line:
-                continue  # skip empty lines
+                # skip empty lines
+                continue
 
-            username, password, role = line.split(",")
+            # skip header if present
+            if line.lower().startswith("username"):
+                continue
 
-            password_hash = hash_password(password.strip())
+            parts = [p.strip() for p in line.split(",")]
+
+            if len(parts) != 3:
+                # bad line format – don't crash, just skip
+                print(f"Skipping invalid line in users file: {line!r}")
+                continue
+
+            username, password, role = parts
+            password_hash = hash_password(password)
 
             cursor.execute(
                 """
                 INSERT INTO users (username, password_hash, role)
                 VALUES (?, ?, ?)
                 """,
-                (username.strip(), password_hash, role.strip())
+                (username, password_hash, role)
             )
 
     conn.commit()
@@ -40,7 +50,7 @@ def migrate_users_from_file(conn, file_path="DATA/users.txt"):
 
 def get_all_users(conn):
     """
-    Return a list of (id, username, role) for all users.
+    Return all users as (id, username, role) rows.
     """
     cursor = conn.cursor()
     cursor.execute("SELECT id, username, role FROM users")

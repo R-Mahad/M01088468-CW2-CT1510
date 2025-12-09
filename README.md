@@ -2,7 +2,7 @@
 
 **Student Name:** [Rayaan Mahad]  
 **Student ID:** [M001088468]  
-**Course:** CST1510 - CW2 
+**Course:** CST1510 - CW2 - Multi-Domain Intelligence Platform
 ## Project Description
 
 This project is a command-line authentication system that implements secure password hashing using `bcrypt`.  

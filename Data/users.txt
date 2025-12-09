@@ -1,1 +1,4 @@
-alice,$2b$12$jdfHfs4EAzMLKYhzFxGAzeXpAvDv//iHX9hRosavWw/lme92BCx7K
+alice,password123,admin
+bob,secret456,user
+john,abc123,user
+

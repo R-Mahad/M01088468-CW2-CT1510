@@ -1,4 +1,0 @@
-alice,password123,admin
-bob,secret456,user
-john,abc123,user
-

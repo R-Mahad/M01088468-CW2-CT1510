@@ -69,28 +69,36 @@ if __name__ == "__main__":
     is_invalid = verify_password("WrongPassword", hashed)
     print(f"Verification with incorrect password: {is_invalid}")
 
-def register_user(username, password):
+def register_user(username, password, role="user"):
     """
-    Registers a new user by hashing their password and storing credentials.
+    Registers a new user with a role.
 
     Args:
-        username (str): The username for the new account.
-        password (str): The plaintext password to hash and store.
-
-    Returns:
-        bool: True if registration successful, False if username already exists.
+        username (str)
+        password (str)
+        role (str): user, admin, analyst
     """
-    # 1. Check if the username already exists
     if user_exists(username):
         print(f"Error: Username '{username}' already exists.")
         return False
+
+    hashed_password = hash_password(password)
+
+    with open(USER_DATA_FILE, "a") as f:
+        f.write(f"{username},{hashed_password},{role}\n")
+
+    print(f"Success: User '{username}' registered as '{role}'.")
+    return True
+
 
     # 2. Hash the user's password using bcrypt
     hashed_password = hash_password(password)
 
     # 3. Append the new user credentials to the file in "username,hashed_password" format
     with open(USER_DATA_FILE, "a") as f:
-        f.write(f"{username},{hashed_password}\n")
+      f.write(f"{username},{hashed_password},{role}\n")
+
+
 
     # 4. Confirm registration to the user
     print(f"Success: User '{username}' registered successfully!")
@@ -123,25 +131,27 @@ def user_exists(username):
     # If we finish the loop with no match, the user does not exist
     return False
 
-def register_user(username, password):
+def register_user(username, password, role="user"):
     """
-    Registers a new user by hashing their password and storing credentials.
+    Registers a new user with a role.
+
+    Args:
+        username (str)
+        password (str)
+        role (str): user, admin, analyst
     """
-    # 1) Check if username already exists
     if user_exists(username):
         print(f"Error: Username '{username}' already exists.")
         return False
 
-    # 2) Hash the password
     hashed_password = hash_password(password)
 
-    # 3) Append new user credentials to the file
     with open(USER_DATA_FILE, "a") as f:
-        f.write(f"{username},{hashed_password}\n")
+        f.write(f"{username},{hashed_password},{role}\n")
 
-    # 4) Tell the user it worked
-    print(f"Success: User '{username}' registered successfully!")
+    print(f"Success: User '{username}' registered as '{role}'.")
     return True
+
 
 
 def login_user(username, password):
@@ -164,12 +174,14 @@ def login_user(username, password):
     with open(USER_DATA_FILE, "r") as f:
         for line in f:
             # Each line is "username,hashed_password"
-            stored_username, stored_hash = line.strip().split(",", 1)
+            stored_username, stored_hash, stored_role = line.strip().split(",", 2)
+
 
             if stored_username == username:
                 # Username found → verify the password using bcrypt
                 if verify_password(password, stored_hash):
-                    print(f"Success: Welcome, {username}!")
+                    print(f"Success: Welcome, {username}! (Role: {stored_role})")
+
                     return True
                 else:
                     print("Error: Invalid password.")
@@ -219,6 +231,43 @@ def validate_password(password):
 
     return True, ""
 
+def check_password_strength(password):
+    """
+    Evaluates password strength.
+
+    Returns:
+        str: "Weak", "Medium", or "Strong"
+    """
+    score = 0
+
+    # Length check
+    if len(password) >= 8:
+        score += 1
+
+    # Uppercase letter
+    if any(char.isupper() for char in password):
+        score += 1
+
+    # Lowercase letter
+    if any(char.islower() for char in password):
+        score += 1
+
+    # Digit
+    if any(char.isdigit() for char in password):
+        score += 1
+
+    # Special character
+    if any(not char.isalnum() for char in password):
+        score += 1
+
+    if score <= 2:
+        return "Weak"
+    elif score <= 4:
+        return "Medium"
+    else:
+        return "Strong"
+
+
 def display_menu():
     """Displays the main menu options."""
     print("\n" + "=" * 50)
@@ -257,12 +306,20 @@ def main():
             if not is_valid:
                 print(f"Error: {error_msg}")
                 continue
+            strength = check_password_strength(password)
+            print(f"Password strength: {strength}")
 
             # Confirm password
             password_confirm = input("Confirm password: ").strip()
             if password != password_confirm:
                 print("Error: Passwords do not match.")
                 continue
+           
+
+
+            # Check password strength
+            strength = check_password_strength(password)
+            print(f"Password strength: {strength}")
 
             # Register the user
             register_user(username, password)

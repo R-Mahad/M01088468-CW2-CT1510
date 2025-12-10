@@ -15,5 +15,5 @@ def connect_database(db_path=DB_PATH):
     if folder and not os.path.exists(folder):
         os.makedirs(folder)
 
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(db_path, check_same_thread=False)
     return conn

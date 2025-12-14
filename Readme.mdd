@@ -1,0 +1,130 @@
+Multi-Domain Intelligence Platform (Week 11)
+
+Module
+CT1510 – Programming for Data Science / Intelligent Systems
+
+Week:
+Week 11 – Object-Oriented Refactoring & Visualisation
+
+Project Overview
+This project is a multi-domain intelligence platform built using Streamlit and SQLite.
+
+It allows users to analyse and manage data across three domains:
+
+Cybersecurity
+Data Science
+IT Operations
+
+The application was originally developed using a procedural approach in earlier weeks.
+For Week 11, the project was refactored to use Object-Oriented Programming (OOP) while keeping the original functionality intact.
+
+Week 11 Refactoring Summary
+The main aim of Week 11 was to improve the structure and maintainability of the codebase.
+
+Refactoring changes made:
+
+Introduced model classes to represent real-world entities:
+SecurityIncident
+Dataset
+ITTicket
+Converted database rows into Python objects
+
+Used object methods to calculate metrics (e.g. high risk incidents, active tickets)
+
+Kept existing database access functions (app.data.*) unchanged
+
+Improved separation of concerns between:
+
+Data access
+Business logic
+User interface
+
+The refactoring improves code clarity without rewriting the entire application.
+
+Features by Page
+🛡 Cybersecurity Dashboard
+
+View and filter cyber incidents by:
+Severity
+Status
+Date range
+Keyword search
+
+Metrics calculated using OOP methods:
+Total incidents
+High/Critical incident
+Open/In-progress incidents
+
+Visualisations:
+Bar chart (incidents by severity)
+Line chart (incidents over time)
+Pie chart (ticket priority)
+
+CRUD functionality:
+Add new incidents
+Delete existing incidents
+
+📦 Data Science Dashboard
+
+View dataset metadata from the database
+
+Filters:
+
+Category
+Source
+Size range
+Dataset name search
+
+Metrics:
+
+Number of datasets
+Average dataset size
+Large datasets (> 1MB)
+
+Visualisations:
+
+Bar chart (datasets by category)
+Bar chart (datasets by source)
+Scatter plot (dataset size vs ID)
+
+CRUD functionality:
+
+Add new datasets
+Delete datasets
+
+🛠 IT Operations Dashboard
+
+Manage IT support tickets
+
+Filters:
+
+Priority
+Status
+Date range
+Title search
+
+Metrics:
+
+Total tickets
+High priority tickets
+Active tickets
+
+Visualisations:
+
+Area chart (tickets by status)
+Bar chart (tickets by priority)
+Pie chart (priority distribution)
+
+CRUD functionality:
+
+Add new tickets
+Delete tickets
+
+Technologies Used:
+Python
+Streamlit
+SQLite
+Pandas
+Matplotlib
+NumPy
+
